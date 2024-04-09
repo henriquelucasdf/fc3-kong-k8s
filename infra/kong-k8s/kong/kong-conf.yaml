@@ -1,0 +1,45 @@
+# https://github.com/Kong/charts/blob/main/charts/kong/values.yaml
+
+
+env: 
+  database: "off"
+  prefix: /kong_prefix/
+
+image:
+  repository: kong
+  tag: "3.6"
+
+admin:
+  enabled: true
+  http:
+    enabled: true
+    servicePort: 8001
+    containerPort: 8001
+  tls:
+    parameters: []
+  labels:
+    enable-metrics: "true"
+
+postgresql:
+  enabled: false
+
+ingressController:
+  image:
+    repository: kong/kubernetes-ingress-controller
+    tag: "3.1"
+  enabled: true
+  installCRDs: false
+
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8100"
+
+proxy:
+  type: NodePort
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
